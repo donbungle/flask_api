@@ -1,8 +1,8 @@
-from ma import ma
 from models.user import UserModel
 
+from ma import ma
 
-class UserSchema(ma.ModelSchema):
+class UserSchema(ma.Schema):
     class Meta:
         model = UserModel
         load_only = ("password",)

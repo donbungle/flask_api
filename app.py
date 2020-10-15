@@ -2,7 +2,11 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from marshmallow import ValidationError
+from flask_cors import CORS
 from dotenv import load_dotenv
+
+from datetime import datetime, timedelta
+import os
 
 from db import db
 from ma import ma
@@ -12,12 +16,24 @@ from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 from resources.order import Order
 
+# Configuration
+current_path = os.path.dirname(__file__)
+
+
 app = Flask(__name__)
 load_dotenv(".env")
 app.config.from_object("default_config")
-app.config.from_envvar("APPLICATION_SETTINGS")
+CORS(app)
 api = Api(app)
+'''app = Flask(__name__)
+load_dotenv(".env")
+app.config.from_object("default_config")
+app.config.from_envvar("APPLICATION_SETTINGS")
+api = Api(app)'''
 
+@app.route('/home')
+def home():
+    return str("HOLA MUNDO!")
 
 @app.before_first_request
 def create_tables():
@@ -52,4 +68,4 @@ api.add_resource(Order, "/order")
 if __name__ == "__main__":
     db.init_app(app)
     ma.init_app(app)
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

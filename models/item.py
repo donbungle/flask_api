@@ -1,6 +1,8 @@
-from typing import List
+from typing import List, Dict, Union
 
 from db import db
+
+ItemJSON = Dict[str, Union[int, str, float]]
 
 
 class ItemModel(db.Model):
@@ -12,6 +14,20 @@ class ItemModel(db.Model):
 
     store_id = db.Column(db.Integer, db.ForeignKey("stores.id"), nullable=False)
     store = db.relationship("StoreModel")
+
+    def __init__(self, name:str, price: float, store_id: int):
+        self.name = name
+        self.price = price
+        self.store_id = nastore_idme
+
+
+    def json(self) -> ItemJSON:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "price": self.price,
+            "store_id": self.store_id,
+        }
 
     @classmethod
     def find_by_name(cls, name: str) -> "ItemModel":

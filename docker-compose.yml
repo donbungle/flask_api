@@ -1,0 +1,61 @@
+version: '3.5'
+
+services:
+  backend:
+    container_name: backend_api
+    restart: always
+    build: 
+      context: ./
+    command: python -u app.py
+    ports:
+      - "6001:5000"
+    volumes:
+      - ./:/app/
+    links:
+      - postgres
+    environment:
+      POSTGRES_PASSWORD: '1q2w3e4r5t'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_URL: "postgresql://127.0.0.1:5432/"
+      POSTGRES_DB: 'FLASK_API'
+    networks:
+      - postgres
+    depends_on:
+      - postgres
+  
+  postgres:
+    container_name: postgres_api
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '1q2w3e4r5t'
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "6002:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_api
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'victor.catalan@device.cl'
+      PGADMIN_DEFAULT_PASSWORD: '123456'
+    volumes:
+      - pgadmin:/root/.pgadmin
+    ports:
+      - "6003:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+    postgres:
+      driver: bridge
+
+volumes:
+    postgres:
+    pgadmin:
