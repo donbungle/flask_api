@@ -22,7 +22,7 @@ class UserRegister(Resource):
     def post(cls):
         user_json = request.get_json()
         user = user_schema.load(user_json)
-
+        
         if UserModel.find_by_username(user.username):
             return {"message": gettext("user_username_exists")}, 400
 

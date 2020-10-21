@@ -3,7 +3,7 @@ from models.item import ItemModel
 from models.store import StoreModel
 
 
-class ItemSchema(ma.Schema):
+class ItemSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = ItemModel
         load_only = ("store",)

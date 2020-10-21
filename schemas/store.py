@@ -4,7 +4,7 @@ from models.item import ItemModel
 from schemas.item import ItemSchema
 
 
-class StoreSchema(ma.Schema):
+class StoreSchema(ma.SQLAlchemyAutoSchema):
     items = ma.Nested(ItemSchema, many=True)
 
     class Meta:
